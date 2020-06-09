@@ -184,9 +184,9 @@ class Simplifier(object):
 
         return real_areas
 
-    def simplify(self, number=None, ratio=None, threshold=None):
+    def simplify(self, number=None, ratio=None, threshold=None, return_mask=False):
         if threshold is not None:
-            return self.by_threshold(threshold)
+            return self.by_threshold(threshold, return_mask)
 
         elif number is not None:
             return self.by_number(number)
@@ -195,8 +195,11 @@ class Simplifier(object):
             ratio = ratio or 0.90
             return self.by_ratio(ratio)
 
-    def by_threshold(self, threshold):
-        return self.pts_in[self.thresholds >= threshold]
+    def by_threshold(self, threshold, return_mask=False):
+        if return_mask:
+            return self.thresholds >= threshold
+        else:
+            return self.pts_in[self.thresholds >= threshold]
 
     def by_number(self, n):
         n = int(n)
